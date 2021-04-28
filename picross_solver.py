@@ -31,28 +31,25 @@ def add_blocks_constraint(solver, blocks_list, right_max):
         solver.add(right <= right_max)
 
 
+def generate_cell_constraint(i, blocks, cell):
+    """
+    マス目の制約を生成
+    """
+    # マス目がいずれかのブロックに含まれる⇒黒, 含まれない⇒白
+    consts = [z3.And(left <= i, i < right) for left, right in blocks]
+    return cell == z3.Or(consts)
+
+
 def add_cells_constraint(solver, cells, v_blocks_list, h_blocks_list):
     """
-    マス目の制約をソルバーに追加
+    各マス目の制約をソルバーに追加
     """
     for x in range(len(v_blocks_list)):
         for y in range(len(h_blocks_list)):
-            cell = cells[x][y]
-            v_blocks, h_blocks = v_blocks_list[x], h_blocks_list[y]
-
-            v_consts = []
-            for y_left, y_right in v_blocks:
-                # マス目が縦ブロックに含まれるか？
-                v_consts.append(z3.And(y_left <= y, y < y_right))
-            # マス目がいずれかの縦ブロックに含まれる⇒黒, 含まれない⇒白
-            solver.add(cell == z3.Or(v_consts))
-
-            h_consts = []
-            for x_left, x_right in h_blocks:
-                # マス目が横ブロックに含まれるか？
-                h_consts.append(z3.And(x_left <= x, x < x_right))
-            # マス目がいずれかの横ブロックに含まれる⇒黒, 含まれない⇒白
-            solver.add(cell == z3.Or(h_consts))
+            solver.add(
+                generate_cell_constraint(y, blocks=v_blocks_list[x], cell=cells[x][y]),
+                generate_cell_constraint(x, blocks=h_blocks_list[y], cell=cells[x][y]),
+            )
 
 
 def solve_problem(v_problem, h_problem):
@@ -107,7 +104,6 @@ def generate_pretty_str(solution, v_problem, h_problem, margin):
                 str(v_numbers[i + n_len - v_max]) if i >= v_max - n_len else ""
             )
             result += v_number_str + sp(margin - len(v_number_str) + 1)
-
         result += "\n"
 
     for y in range(len(h_problem)):
