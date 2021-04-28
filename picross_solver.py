@@ -83,10 +83,8 @@ def solve_problem(v_problem, h_problem):
 
     # 問題が解けるかチェック
     if solver.check() != z3.sat:
-        print("[!] Failed to solve the problem.")
         return None
 
-    print("[+] Successfully solved the problem.")
     model = solver.model()
     return [[bool(model[cells[x][y]]) for y in range(height)] for x in range(width)]
 
@@ -95,30 +93,32 @@ def generate_pretty_str(solution, v_problem, h_problem, margin):
     """
     解法からピクロス盤面を表す文字列を生成
     """
-    sp = " " * margin
+    sp = lambda m: " " * m
 
     v_max = max(map(len, v_problem))
     h_max = max(map(len, h_problem))
 
     result = ""
     for i in range(v_max):
-        result += (" " + sp) * h_max
+        result += sp(margin + 1) * h_max
         for v_numbers in v_problem:
             n_len = len(v_numbers)
-            if i + n_len >= v_max:
-                result += f"{v_numbers[i + n_len - v_max]}" + sp
-            else:
-                result += " " + sp
+            v_number_str = (
+                str(v_numbers[i + n_len - v_max]) if i >= v_max - n_len else ""
+            )
+            result += v_number_str + sp(margin - len(v_number_str) + 1)
+
         result += "\n"
 
     for y in range(len(h_problem)):
         h_numbers = h_problem[y]
-        result += (" " + sp) * (h_max - len(h_numbers))
+        result += sp(margin + 1) * (h_max - len(h_numbers))
         for h_number in h_numbers:
-            result += f"{h_number}" + sp
+            h_number_str = str(h_number)
+            result += h_number_str + sp(margin - len(h_number_str) + 1)
 
         for x in range(len(v_problem)):
-            result += ("■" if solution[x][y] else "□") + sp
+            result += ("■" if solution[x][y] else "□") + sp(margin)
         result += "\n"
 
     return result
@@ -148,6 +148,7 @@ def main():
 
     # 解法を表示
     if solution:
+        print("[+] Successfully solved the problem.")
         result = generate_pretty_str(
             solution=solution,
             v_problem=v_problem,
@@ -155,6 +156,8 @@ def main():
             margin=args.margin,
         )
         print(result)
+    else:
+        print("[!] Failed to solve the problem.")
 
 
 if __name__ == "__main__":
