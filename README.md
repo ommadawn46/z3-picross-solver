@@ -3,13 +3,25 @@
 ## Usage
 
 ```
-usage: picross_solver.py [-h] [--margin MARGIN] problem_file
+z3-picross-solver [-h] [--margin MARGIN] problem_file
+```
+
+or
+
+```
+python -m picross_solver.core [-h] [--margin MARGIN] problem_file
+```
+
+## Install
+
+```
+pip install .
 ```
 
 ## Demo
 
 ```
-❯ python picross_solver.py ./problems/wikipedia-8x8.yaml
+❯ z3-picross-solver ./sample_problems/wikipedia-8x8.yaml
 [+] Successfully solved the problem.
         2 1 1 2
         1 1 1 1 3 2
@@ -25,7 +37,7 @@ usage: picross_solver.py [-h] [--margin MARGIN] problem_file
 ```
 
 ```
-❯ python picross_solver.py --margin 1 ./problems/wikipedia-20x20.yaml
+❯ z3-picross-solver --margin 1 ./sample_problems/wikipedia-20x20.yaml
 [+] Successfully solved the problem.
                       1 1
                       1 1   3   3
@@ -55,7 +67,7 @@ usage: picross_solver.py [-h] [--margin MARGIN] problem_file
 ```
 
 ```
-❯ python picross_solver.py --margin 2 ./problems/wikipedia-30x20.yaml
+❯ z3-picross-solver --margin 2 ./sample_problems/wikipedia-30x20.yaml
 [+] Successfully solved the problem.
                                                                1
                               2  1     1  2  3  6  8  1  1     4  6  4  2  1     1  1
