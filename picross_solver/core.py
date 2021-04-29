@@ -22,13 +22,13 @@ def main():
     # ピクロス問題をロード
     with open(args.problem_file, "r") as f:
         problem = yaml.safe_load(f)
-    vertical_problem = problem["vertical"]
-    horizontal_problem = problem["horizontal"]
+    vertical_hints = problem["vertical_hints"]
+    horizontal_hints = problem["horizontal_hints"]
 
     # ピクロスを解く
-    solution = solver.solve_problem(
-        vertical_problem=vertical_problem,
-        horizontal_problem=horizontal_problem,
+    solution = solver.solve_pircoss(
+        vertical_hints=vertical_hints,
+        horizontal_hints=horizontal_hints,
     )
 
     # 解法を表示
@@ -36,8 +36,8 @@ def main():
         print("[+] Successfully solved the problem.")
         pretty_print.pprint(
             solution=solution,
-            vertical_problem=vertical_problem,
-            horizontal_problem=horizontal_problem,
+            vertical_hints=vertical_hints,
+            horizontal_hints=horizontal_hints,
             margin=args.margin,
         )
     else:

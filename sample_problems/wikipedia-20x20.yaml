@@ -1,6 +1,6 @@
 # https://en.wikipedia.org/wiki/Nonogram
 
-vertical:
+vertical_hints:
   - [2]
   - [1, 2]
   - [2, 3]
@@ -22,7 +22,7 @@ vertical:
   - [1]
   - [1]
 
-horizontal:
+horizontal_hints:
   - [3]
   - [5]
   - [3, 1]

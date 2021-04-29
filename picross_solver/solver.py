@@ -1,12 +1,12 @@
 import z3
 
 
-def build_blocks_list(problem, var_char):
+def build_blocks_list(hints, var_char):
     """
     問題から各ブロックを表すz3変数のリストを生成
     """
     blocks_list = []
-    for var_num, numbers in enumerate(problem):
+    for var_num, numbers in enumerate(hints):
         blocks = []
         for n_i, n in enumerate(numbers):
             left = z3.Int(f"{var_char}{var_num}_{n_i}")
@@ -53,19 +53,19 @@ def add_cells_constraint(solver, cells, v_blocks_list, h_blocks_list):
             add_const(x, y)
 
 
-def solve_problem(vertical_problem, horizontal_problem):
+def solve_pircoss(vertical_hints, horizontal_hints):
     """
     ピクロスの問題を解く
     """
     solver = z3.Solver()
-    width, height = len(vertical_problem), len(horizontal_problem)
+    width, height = len(vertical_hints), len(horizontal_hints)
 
     # 各マス目のz3変数を生成
     cells = [[z3.Bool(f"c_{x}_{y}") for y in range(height)] for x in range(width)]
 
     # 問題から各ブロックを表すz3変数のリストを作成
-    v_blocks_list = build_blocks_list(problem=vertical_problem, var_char="v")
-    h_blocks_list = build_blocks_list(problem=horizontal_problem, var_char="h")
+    v_blocks_list = build_blocks_list(hints=vertical_hints, var_char="v")
+    h_blocks_list = build_blocks_list(hints=horizontal_hints, var_char="h")
 
     # 各ブロックに制約を追加
     add_blocks_constraint(solver=solver, blocks_list=v_blocks_list, right_max=height)
