@@ -53,7 +53,7 @@ def add_cells_constraint(solver, cells, v_blocks_list, h_blocks_list):
             add_const(x, y)
 
 
-def solve_pircoss(vertical_hints, horizontal_hints):
+def solve_picross(vertical_hints, horizontal_hints):
     """
     ピクロスの問題を解く
     """

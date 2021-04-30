@@ -26,7 +26,7 @@ def main():
     horizontal_hints = problem["horizontal_hints"]
 
     # ピクロスを解く
-    solution = solver.solve_pircoss(
+    solution = solver.solve_picross(
         vertical_hints=vertical_hints,
         horizontal_hints=horizontal_hints,
     )
